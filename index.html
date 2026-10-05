@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Classical Cryptography Simulator - six classical encryption and decryption algorithms."
+    >
+
+    <title>Classical Cryptography Simulator</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+
+        <div class="brand">
+            <div class="brand-icon">⌘</div>
+
+            <div>
+                <h1>Classical Cryptography Simulator</h1>
+                <p>
+                    Encrypt and decrypt messages using classical cryptographic algorithms.
+                </p>
+            </div>
+        </div>
+
+        <span class="badge">EDUCATIONAL • CLIENT-SIDE</span>
+
+    </div>
+</header>
+
+
+<main class="container main-content">
+
+    <!-- ================= INPUT ================= -->
+
+    <section class="card">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">STEP 01</span>
+                <h2>Cryptography Input</h2>
+            </div>
+
+            <span class="lock-icon">🔐</span>
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="message">
+                Plain Text / Cipher Text
+            </label>
+
+            <textarea
+                id="message"
+                rows="6"
+                placeholder="Enter your message..."
+                spellcheck="false"
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="key">
+                Key
+            </label>
+
+            <div class="key-row">
+
+                <input
+                    id="key"
+                    type="text"
+                    placeholder="Enter shift value (e.g. 3)"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+                <button
+                    id="generate-key-btn"
+                    class="secondary-btn hidden"
+                    type="button"
+                >
+                    Generate Random Key
+                </button>
+
+            </div>
+
+            <div id="key-help" class="field-help">
+                Caesar key must be an integer.
+            </div>
+
+        </div>
+
+
+        <div
+            id="error-message"
+            class="error-message"
+            role="alert"
+        ></div>
+
+    </section>
+
+
+    <!-- ================= ALGORITHM ================= -->
+
+    <section class="card">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">STEP 02</span>
+                <h2>Select Algorithm</h2>
+            </div>
+
+        </div>
+
+
+        <div id="algorithm-grid" class="algorithm-grid">
+
+            <!-- Caesar -->
+            <button
+                class="algorithm-card active"
+                data-algorithm="caesar"
+                type="button"
+            >
+                <span class="algorithm-number">01</span>
+                <span class="algorithm-icon">↔</span>
+
+                <span class="algorithm-name">
+                    Caesar Cipher
+                </span>
+
+                <span class="algorithm-type">
+                    Substitution
+                </span>
+
+                <span class="algorithm-description">
+                    Shifts each alphabetic character by a fixed number.
+                </span>
+            </button>
+
+
+            <!-- Vigenere -->
+            <button
+                class="algorithm-card"
+                data-algorithm="vigenere"
+                type="button"
+            >
+                <span class="algorithm-number">02</span>
+                <span class="algorithm-icon">V</span>
+
+                <span class="algorithm-name">
+                    Vigenère Cipher
+                </span>
+
+                <span class="algorithm-type">
+                    Polyalphabetic
+                </span>
+
+                <span class="algorithm-description">
+                    Uses a repeating keyword as a sequence of Caesar shifts.
+                </span>
+            </button>
+
+
+            <!-- Playfair -->
+            <button
+                class="algorithm-card"
+                data-algorithm="playfair"
+                type="button"
+            >
+                <span class="algorithm-number">03</span>
+                <span class="algorithm-icon">P</span>
+
+                <span class="algorithm-name">
+                    Playfair Cipher
+                </span>
+
+                <span class="algorithm-type">
+                    Digraph
+                </span>
+
+                <span class="algorithm-description">
+                    Encrypts pairs of letters using a 5×5 key square.
+                </span>
+            </button>
+
+
+            <!-- Hill -->
+            <button
+                class="algorithm-card"
+                data-algorithm="hill"
+                type="button"
+            >
+                <span class="algorithm-number">04</span>
+                <span class="algorithm-icon">M</span>
+
+                <span class="algorithm-name">
+                    Hill Cipher
+                </span>
+
+                <span class="algorithm-type">
+                    Matrix
+                </span>
+
+                <span class="algorithm-description">
+                    Uses matrix multiplication modulo 26.
+                </span>
+            </button>
+
+
+            <!-- OTP -->
+            <button
+                class="algorithm-card"
+                data-algorithm="otp"
+                type="button"
+            >
+                <span class="algorithm-number">05</span>
+                <span class="algorithm-icon">⊕</span>
+
+                <span class="algorithm-name">
+                    One-Time Pad
+                </span>
+
+                <span class="algorithm-type">
+                    Modular
+                </span>
+
+                <span class="algorithm-description">
+                    Uses a random key with the same letter length as the message.
+                </span>
+            </button>
+
+
+            <!-- Rail Fence -->
+            <button
+                class="algorithm-card"
+                data-algorithm="railfence"
+                type="button"
+            >
+                <span class="algorithm-number">06</span>
+                <span class="algorithm-icon">≋</span>
+
+                <span class="algorithm-name">
+                    Rail Fence
+                </span>
+
+                <span class="algorithm-type">
+                    Transposition
+                </span>
+
+                <span class="algorithm-description">
+                    Rearranges every character using a zig-zag pattern.
+                </span>
+            </button>
+
+        </div>
+
+
+        <div id="algorithm-info" class="algorithm-info">
+
+            <div>
+                <strong>Description</strong>
+                <p id="info-text"></p>
+            </div>
+
+            <div>
+                <strong>Key Format</strong>
+                <p id="info-key"></p>
+            </div>
+
+            <div>
+                <strong>Example</strong>
+                <p id="info-example"></p>
+            </div>
+
+            <div>
+                <strong>Requirements</strong>
+                <p id="info-requirements"></p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= OPERATION ================= -->
+
+    <section class="card compact-card">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">STEP 03</span>
+                <h2>Choose Operation</h2>
+            </div>
+
+        </div>
+
+
+        <div class="operation-switch">
+
+            <button
+                id="encrypt-btn"
+                class="operation-btn active"
+                type="button"
+            >
+                <span>↑</span>
+                ENCRYPT
+            </button>
+
+            <button
+                id="decrypt-btn"
+                class="operation-btn"
+                type="button"
+            >
+                <span>↓</span>
+                DECRYPT
+            </button>
+
+        </div>
+
+
+        <div class="action-row">
+
+            <button
+                id="example-btn"
+                class="secondary-btn"
+                type="button"
+            >
+                Load Example
+            </button>
+
+            <button
+                id="convert-btn"
+                class="primary-btn"
+                type="button"
+            >
+                Convert →
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RESULT ================= -->
+
+    <section
+        id="result-section"
+        class="card result-card hidden"
+    >
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">OUTPUT</span>
+                <h2>Result</h2>
+            </div>
+
+            <span class="success-icon">✓</span>
+
+        </div>
+
+
+        <div class="result-meta">
+
+            <div class="meta-item">
+                <span>Algorithm</span>
+                <strong id="result-algorithm"></strong>
+            </div>
+
+            <div class="meta-item">
+                <span>Operation</span>
+                <strong id="result-operation"></strong>
+            </div>
+
+            <div class="meta-item">
+                <span>Key</span>
+                <strong id="result-key"></strong>
+            </div>
+
+        </div>
+
+
+        <div class="result-block">
+
+            <span class="result-label">
+                Input
+            </span>
+
+            <div
+                id="result-input"
+                class="result-value"
+            ></div>
+
+        </div>
+
+
+        <div class="result-block output-block">
+
+            <span class="result-label">
+                Output
+            </span>
+
+            <div
+                id="result-output"
+                class="result-value output-value"
+            ></div>
+
+        </div>
+
+
+        <div class="result-actions">
+
+            <button
+                id="copy-btn"
+                class="secondary-btn"
+                type="button"
+            >
+                Copy Result
+            </button>
+
+            <button
+                id="clear-btn"
+                class="danger-btn"
+                type="button"
+            >
+                Clear
+            </button>
+
+            <span
+                id="copy-status"
+                class="copy-status"
+            ></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= EXPLANATION ================= -->
+
+    <section
+        id="explanation-section"
+        class="card hidden"
+    >
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">
+                    EDUCATIONAL VIEW
+                </span>
+
+                <h2>
+                    How It Was Done
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="formula-box">
+
+            <span>
+                Formula Used
+            </span>
+
+            <code id="formula"></code>
+
+        </div>
+
+
+        <div
+            id="visualization"
+            class="visualization"
+        ></div>
+
+
+        <div class="steps-container">
+
+            <h3>
+                Step-by-Step Working
+            </h3>
+
+            <ol id="steps-list"></ol>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= REFERENCE ================= -->
+
+    <section class="card reference-card">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">
+                    REFERENCE
+                </span>
+
+                <h2>
+                    Algorithm Reference
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="reference-grid">
+
+            <article>
+                <h3>Caesar</h3>
+                <p>C = (P + K) mod 26</p>
+            </article>
+
+            <article>
+                <h3>Vigenère</h3>
+                <p>Cᵢ = (Pᵢ + Kᵢ) mod 26</p>
+            </article>
+
+            <article>
+                <h3>Playfair</h3>
+                <p>
+                    Encrypts two letters at a time using a 5×5 matrix.
+                </p>
+            </article>
+
+            <article>
+                <h3>Hill</h3>
+                <p>
+                    C = K × P mod 26
+                </p>
+            </article>
+
+            <article>
+                <h3>OTP</h3>
+                <p>
+                    C = (P + K) mod 26
+                </p>
+            </article>
+
+            <article>
+                <h3>Rail Fence</h3>
+                <p>
+                    Transposition using a zig-zag rail pattern.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= NOTICE ================= -->
+
+    <section class="notice">
+
+        <strong>
+            Educational Notice
+        </strong>
+
+        <p>
+            These classical algorithms are historically important but are
+            not suitable for protecting sensitive modern information.
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div class="container">
+        Classical Cryptography Simulator • Built for educational purposes
+    </div>
+
+</footer>
+
+</body>
+</html>
